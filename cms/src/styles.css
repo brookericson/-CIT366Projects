@@ -1,0 +1,24 @@
+/* You can add global styles to this file, and also import other style files */
+nav{
+  border: 1px solid gray;
+  box-shadow: 1px 1px 5px gray;
+}
+
+nav a {
+  color: gray;
+}
+
+.content-center {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.content-right button {
+  margin-left: 5px;
+}
+
+.pannel_name {
+  font-weight: bolder;
+  font-size: 2em;
+}
