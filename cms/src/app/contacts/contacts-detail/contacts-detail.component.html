@@ -1,18 +1,18 @@
 <div class="panel panel-default">
   <div class="panel-heading content-right clearfix">
     <span class="pull-left">
-      <h3>{{ contact.name }}</h3>
-      <img [src]="contact.imageUrl" alt="{{ contact?.name }}" class="img-responsive" style="max-height: 50px;">
+      <h3>{{ contact?.name }}</h3>
+      <img [src]="contact?.imageUrl" alt="{{ contact?.name }}" class="img-responsive" style="max-height: 50px;">
     </span>
   <div class="pull-right">
-      <button type="button" class="btn btn-primary">Edit</button>
-      <button type="button" class="btn btn-danger">Delete</button>
+      <a class="btn btn-primary" routerLink="../:id/edit">Edit</a>
+      <a class="btn btn-danger" (click)='onDelete()'>Delete</a>
   </div>
   </div>
   <div class="panel-body">
     <div class="col-xs-12 list-group-item clearfix">
-      <p><span class="list-group-item-heading">Email: </span>{{ contact.email }}</p>
-      <p><span class="list-group-item-heading">Phone: </span>{{ contact.phone }}</p>
+      <p><span class="list-group-item-heading">Email: </span>{{ contact?.email }}</p>
+      <p><span class="list-group-item-heading">Phone: </span>{{ contact?.phone }}</p>
     </div>
   </div>
 </div>
