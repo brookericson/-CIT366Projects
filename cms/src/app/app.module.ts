@@ -24,6 +24,10 @@ import { DocumentEditComponent } from './documents/document-edit/document-edit.c
 import {AppRoutingModule} from './app-routing.module';
 import { WindRefService } from './wind-ref.service';
 import { ContactEditComponent } from './contacts/contact-edit/contact-edit.component';
+import {FormsModule} from '@angular/forms';
+import {DndModule} from 'ng2-dnd';
+import { ContactsFilterPipe } from './contacts/contacts-filter.pipe';
+
 
 @NgModule({
   declarations: [
@@ -44,11 +48,14 @@ import { ContactEditComponent } from './contacts/contact-edit/contact-edit.compo
     DropdownDirective,
     DocumentViewComponent,
     DocumentEditComponent,
-    ContactEditComponent
+    ContactEditComponent,
+    ContactsFilterPipe
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule,
+    DndModule.forRoot()
   ],
   providers: [ContactService, MessageService, DocumentService, WindRefService],
   bootstrap: [AppComponent]
