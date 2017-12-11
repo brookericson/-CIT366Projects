@@ -10,9 +10,8 @@
                id="searchBox"
                class="form-control"
                name="searchBox"
-               [(ngModel)]="term"
                (keypress)="onkeypress(searchBox.value)"
-               #searchBox="ngModel"
+               #searchBox
                placeholder="Enter search value"
         >
 
@@ -25,7 +24,7 @@
   </div>
     <div class="panel-body">
       <app-contact-item
-        *ngFor="let contactEl of contacts | contactsFilter:term:'contact'; let i = index"
+        *ngFor="let contactEl of contacts | contactsFilter:[term]; let i = index"
         [contact]="contactEl"
         [index]="i"
         dnd-draggable [dragEnabled]="true"

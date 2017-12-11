@@ -11,11 +11,12 @@ import { NgForm } from '@angular/forms';
   styleUrls: ['./contact-edit.component.css']
 })
 export class ContactEditComponent implements OnInit {
-  contact: Contact = null;
+  contact: Contact;
   groupContacts: Contact[] = [];
   editMode = false;
   hasGroup = false;
   invalidGroupContact = false;
+  id: string;
 
   constructor(private contactService: ContactService,
               private router: Router,
@@ -25,12 +26,12 @@ export class ContactEditComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(
       (params: Params) => {
-        const id: string = params['id'];
-        if (params['id'] === null) {
+        this.id = params['id'];
+        if (params['id'] == null) {
           this.editMode = false;
           return;
         }
-        this.contact = this.contactService.getContact(id);
+        this.contact = this.contactService.getContact(this.id);
         if (!this.contact) {
           return;
         }
@@ -47,7 +48,7 @@ export class ContactEditComponent implements OnInit {
   onSubmit(form: NgForm) {
     const value = form.value;
     const newContact = new Contact('1000', value.name, value.email, value.phone, value.imageUrl, null);
-    if (this.editMode = true) {
+    if (this.editMode) {
       this.contactService.updateContact(this.contact, newContact);
     } else {
       this.contactService.addContact(newContact);

@@ -27,7 +27,7 @@ export class ContactListComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  onKeyPress(value: string) {
+  onkeypress(value: string) {
     this.term = value;
   }
 }

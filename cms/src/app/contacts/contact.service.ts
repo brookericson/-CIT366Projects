@@ -2,6 +2,8 @@ import {EventEmitter, Injectable} from '@angular/core';
 import { Contact } from './contact.model';
 import { MOCKCONTACTS } from './MOCKCONTACTS';
 import {Subject} from 'rxjs/Subject';
+import { Http, Response, Headers } from '@angular/http';
+import 'rxjs/Rx';
 
 @Injectable()
 export class ContactService {
@@ -20,10 +22,8 @@ export class ContactService {
     return this.contacts[index];
   }
 
-  constructor() {
-    this.contacts = MOCKCONTACTS;
-    this.maxContactId = this.getMaxId();
-    this.contacts.sort(this.compareContactsByName);
+  constructor(private http: Http) {
+    this.initContacts();
   }
 
   deleteContact(contact: Contact) {
@@ -38,7 +38,7 @@ export class ContactService {
 
     this.contacts.splice(pos, 1);
     this.contacts = this.contacts.slice();
-    this.contactListChangedEvent.next(this.contacts);
+    this.storeContacts();
   }
 
   getMaxId(): number {
@@ -60,7 +60,7 @@ export class ContactService {
     newContact.id = this.maxContactId.toString();
     this.contacts.push(newContact);
     this.contacts = this.contacts.slice();
-    this.contactListChangedEvent.next(this.contacts);
+    this.storeContacts();
   }
 
   updateContact(originalContact: Contact,
@@ -77,15 +77,39 @@ export class ContactService {
     newContact.id = originalContact.id;
     this.contacts[pos] = newContact;
     this.contacts = this.contacts.slice();
-    this.contactListChangedEvent.next(this.contacts);
+    this.storeContacts();
   }
 
-   compareContactsByName(contactA: Contact, contactB: Contact){
-    if (contactA.name < contactB.name) {
-      return -1;
-    } else if (contactA.name > contactB.name) {
-      return 1;
-    }
-    return 0;
+  //  compareContactsByName(contactA: Contact, contactB: Contact){
+  //   if (contactA.name < contactB.name) {
+  //     return -1;
+  //   } else if (contactA.name > contactB.name) {
+  //     return 1;
+  //   }
+  //   return 0;
+  // }
+
+  initContacts() {
+    this.http.get('https://brookecms-3bb6d.firebaseio.com/contacts.json')
+      .map((response: Response) => {
+          const contacts: Contact[] = response.json();
+          return contacts;
+        }
+      )
+      .subscribe((contactsReturned: Contact[]) => {
+        this.contacts = contactsReturned;
+        this.maxContactId = this.getMaxId();
+        this.contactListChangedEvent.next(this.contacts.slice());
+      });
+  }
+
+  storeContacts() {
+    const headers = new Headers({'Content-Type': 'application/json'});
+    return this.http.put('https://brookecms-3bb6d.firebaseio.com/contacts.json',
+      this.getContacts(),
+      {headers: headers})
+      .subscribe(
+        (reponse) => this.contactListChangedEvent.next(this.contacts.slice())
+      );
   }
 }
